@@ -16,7 +16,7 @@ inline static void cass_print_context(const char *filename, int line)
     fprintf(stderr, "Assertion error at %s:%d\n", filename, line);
 }
 
-int cass_status(void)
+inline static int cass_status(void)
 {
     if (cass_errors == 1)
         printf("Attention: %d assertion has failed.\n", cass_errors);

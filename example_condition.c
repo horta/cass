@@ -1,5 +1,6 @@
 #include "cass.h"
 #include <math.h>
+#include <string.h>
 
 void test_pass(void);
 void test_fail(void);
@@ -21,6 +22,10 @@ void test_pass(void)
 
     /* pass */
     cass_condition(isnan(NAN));
+
+    /* pass */
+    const char actual[] = "hello";
+    cass_condition(strcmp(actual, "hello") == 0);
 }
 
 void test_fail(void)
@@ -30,4 +35,8 @@ void test_fail(void)
 
     /* fail */
     cass_condition(0);
+
+    /* fail */
+    const char actual[] = "hello";
+    cass_condition(strcmp(actual, "world") == 0);
 }
