@@ -96,7 +96,7 @@ inline static int cass_status(void)
         ++cass_errors;                                                        \
     }
 
-#define cass_condition(a)                                                     \
+#define cass_cond(a)                                                          \
     if (!(a)) {                                                               \
         cass_print_context(__FILE__, __LINE__);                               \
         fprintf(stderr, " Condition evaluates to false:\n");                  \
