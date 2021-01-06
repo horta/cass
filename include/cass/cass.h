@@ -1,10 +1,12 @@
-#ifndef CASS_H
-#define CASS_H
+#ifndef CASS_CASS_H
+#define CASS_CASS_H
 
 #include <inttypes.h>
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+
+#define CASS_VERSION "1.0.0"
 
 static int cass_errors = 0;
 

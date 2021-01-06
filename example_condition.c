@@ -1,4 +1,4 @@
-#include "cass.h"
+#include "cass/cass.h"
 #include <math.h>
 #include <string.h>
 

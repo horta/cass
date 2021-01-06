@@ -1,4 +1,4 @@
-#include "cass.h"
+#include "cass/cass.h"
 
 void test_pass(void);
 void test_fail(void);

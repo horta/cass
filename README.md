@@ -1,2 +1,3 @@
 # cass
-C assertion library.
+
+Assertion library for the C language.
