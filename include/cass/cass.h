@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CASS_VERSION "1.0.1"
+#define CASS_VERSION "1.0.2"
 
 static int cass_errors = 0;
 
@@ -41,7 +41,7 @@ inline static int cass_status(void)
 
 #define cass_close(actual, desired)                                                                \
     _Generic(actual, float                                                                         \
-             : cass_close2((double)(actual), (double)(desired), 1e-06, 0.0), double                \
+             : cass_close2((double)(actual), (double)(desired), 5e-05, 0.0), double                \
              : cass_close2((double)(actual), (double)(desired), 1e-09, 0.0))
 
 #define cass_close2(actual, desired, rel_tol, abs_tol)                                             \
