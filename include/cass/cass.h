@@ -26,19 +26,6 @@ inline static int cass_status(void)
     return cass_errors;
 }
 
-#define cass_equal_int(a, d)                                                                       \
-    {                                                                                              \
-        double _a = a;                                                                             \
-        double _d = d;                                                                             \
-        if (!(_a == _d)) {                                                                         \
-            cass_print_context(__FILE__, __LINE__);                                                \
-            fprintf(stderr, " Items are not equal:\n");                                            \
-            fprintf(stderr, "  ACTUAL: %d\n", (int)_a);                                            \
-            fprintf(stderr, "  DESIRED: %d\n\n", (int)_d);                                         \
-            ++cass_errors;                                                                         \
-        }                                                                                          \
-    }
-
 #define cass_close(actual, desired)                                                                \
     _Generic(actual, float                                                                         \
              : cass_close2((double)(actual), (double)(desired), 5e-05, 0.0), double                \
@@ -62,50 +49,62 @@ void __cass_close2(double actual, double desired, double rel_tol, double abs_tol
     }
 }
 
-#define cass_equal_uint64(a, d)                                                                    \
-    if (!(a == d)) {                                                                               \
-        cass_print_context(__FILE__, __LINE__);                                                    \
-        fprintf(stderr, " Items are not equal:\n");                                                \
-        fprintf(stderr, "  ACTUAL : %" PRIu64 "\n", (uint64_t)a);                                  \
-        fprintf(stderr, "  DESIRED: %" PRIu64 "\n\n", (uint64_t)d);                                \
-        ++cass_errors;                                                                             \
+#define MAKE_CASS_EQUAL(S, T, F)                                                                   \
+    static void __cass_equal_##S(T a, T d, char const *file, unsigned line)                        \
+    {                                                                                              \
+        if (!(a == d)) {                                                                           \
+            cass_print_context(__FILE__, __LINE__);                                                \
+            fprintf(stderr, " Items are not equal:\n");                                            \
+            fprintf(stderr, "  ACTUAL : %" F "\n", a);                                             \
+            fprintf(stderr, "  DESIRED: %" F "\n\n", d);                                           \
+            ++cass_errors;                                                                         \
+        }                                                                                          \
     }
 
-#define cass_equal_uint32(a, d)                                                                    \
-    if (!(a == d)) {                                                                               \
-        cass_print_context(__FILE__, __LINE__);                                                    \
-        fprintf(stderr, " Items are not equal:\n");                                                \
-        fprintf(stderr, "  ACTUAL : %" PRIu32 "\n", (uint32_t)a);                                  \
-        fprintf(stderr, "  DESIRED: %" PRIu32 "\n\n", (uint32_t)d);                                \
-        ++cass_errors;                                                                             \
-    }
+MAKE_CASS_EQUAL(uint64, uint64_t, PRIu64)
+MAKE_CASS_EQUAL(uint32, uint32_t, PRIu32)
+MAKE_CASS_EQUAL(uint16, uint16_t, PRIu16)
+MAKE_CASS_EQUAL(uint8, uint8_t, PRIu8)
 
-#define cass_equal_uint16(a, d)                                                                    \
-    if (!(a == d)) {                                                                               \
-        cass_print_context(__FILE__, __LINE__);                                                    \
-        fprintf(stderr, " Items are not equal:\n");                                                \
-        fprintf(stderr, "  ACTUAL : %" PRIu16 "\n", (uint16_t)a);                                  \
-        fprintf(stderr, "  DESIRED: %" PRIu16 "\n\n", (uint16_t)d);                                \
-        ++cass_errors;                                                                             \
-    }
+MAKE_CASS_EQUAL(int64, int64_t, PRIi64)
+MAKE_CASS_EQUAL(int32, int32_t, PRIi32)
+MAKE_CASS_EQUAL(int16, int16_t, PRIi16)
+MAKE_CASS_EQUAL(int8, int8_t, PRIi8)
 
-#define cass_equal_uint8(a, d)                                                                     \
-    if (!(a == d)) {                                                                               \
-        cass_print_context(__FILE__, __LINE__);                                                    \
-        fprintf(stderr, " Items are not equal:\n");                                                \
-        fprintf(stderr, "  ACTUAL : %" PRIu8 "\n", (uint8_t)a);                                    \
-        fprintf(stderr, "  DESIRED: %" PRIu8 "\n\n", (uint8_t)d);                                  \
-        ++cass_errors;                                                                             \
-    }
+#define cass_equal_uint64(actual, desired)                                                         \
+    __cass_equal_uint64((uint64_t)(actual), (uint64_t)(desired), __FILE__, __LINE__)
 
-#define cass_not_equal_int(a, d)                                                                   \
-    if (!(a != d)) {                                                                               \
-        cass_print_context(__FILE__, __LINE__);                                                    \
-        fprintf(stderr, " Items are not different:\n");                                            \
-        fprintf(stderr, "  ACTUAL   : %d\n", (int)a);                                              \
-        fprintf(stderr, "  UNDESIRED: %d\n\n", (int)d);                                            \
-        ++cass_errors;                                                                             \
-    }
+#define cass_equal_uint32(actual, desired)                                                         \
+    __cass_equal_uint32((uint32_t)(actual), (uint32_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal_uint16(actual, desired)                                                         \
+    __cass_equal_uint16((uint16_t)(actual), (uint16_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal_uint8(actual, desired)                                                          \
+    __cass_equal_uint8((uint8_t)(actual), (uint8_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal_int64(actual, desired)                                                          \
+    __cass_equal_int64((int64_t)(actual), (int64_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal_int32(actual, desired)                                                          \
+    __cass_equal_int32((int32_t)(actual), (int32_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal_int16(actual, desired)                                                          \
+    __cass_equal_int16((int16_t)(actual), (int16_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal_int8(actual, desired)                                                           \
+    __cass_equal_int8((int8_t)(actual), (int8_t)(desired), __FILE__, __LINE__)
+
+#define cass_equal(actual, desired)                                                                \
+    _Generic((actual), uint64_t                                                                    \
+             : __cass_equal_uint64((actual), (desired), __FILE__, __LINE__), uint32_t              \
+             : __cass_equal_uint32((actual), (desired), __FILE__, __LINE__), uint16_t              \
+             : __cass_equal_uint16((actual), (desired), __FILE__, __LINE__), uint8_t               \
+             : __cass_equal_uint8((actual), (desired), __FILE__, __LINE__), int64_t                \
+             : __cass_equal_int64((actual), (desired), __FILE__, __LINE__), int32_t                \
+             : __cass_equal_int32((actual), (desired), __FILE__, __LINE__), int16_t                \
+             : __cass_equal_int16((actual), (desired), __FILE__, __LINE__), int8_t                 \
+             : __cass_equal_int8((actual), (desired), __FILE__, __LINE__))
 
 #define cass_null(a)                                                                               \
     if ((a) != NULL) {                                                                             \
