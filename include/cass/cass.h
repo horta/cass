@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CASS_VERSION "1.0.2"
+#define CASS_VERSION "1.0.3"
 
 static int cass_errors = 0;
 
