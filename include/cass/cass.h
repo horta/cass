@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CASS_VERSION "1.0.4"
+#define CASS_VERSION "1.0.5"
 
 static int cass_errors = 0;
 
@@ -97,14 +97,14 @@ MAKE_CASS_EQUAL(int8, int8_t, PRIi8)
 
 #define cass_equal(actual, desired)                                                                \
     _Generic((actual), uint64_t                                                                    \
-             : __cass_equal_uint64((actual), (desired), __FILE__, __LINE__), uint32_t              \
-             : __cass_equal_uint32((actual), (desired), __FILE__, __LINE__), uint16_t              \
-             : __cass_equal_uint16((actual), (desired), __FILE__, __LINE__), uint8_t               \
-             : __cass_equal_uint8((actual), (desired), __FILE__, __LINE__), int64_t                \
-             : __cass_equal_int64((actual), (desired), __FILE__, __LINE__), int32_t                \
-             : __cass_equal_int32((actual), (desired), __FILE__, __LINE__), int16_t                \
-             : __cass_equal_int16((actual), (desired), __FILE__, __LINE__), int8_t                 \
-             : __cass_equal_int8((actual), (desired), __FILE__, __LINE__))
+             : __cass_equal_uint64, uint32_t                                                       \
+             : __cass_equal_uint32, uint16_t                                                       \
+             : __cass_equal_uint16, uint8_t                                                        \
+             : __cass_equal_uint8, int64_t                                                         \
+             : __cass_equal_int64, int32_t                                                         \
+             : __cass_equal_int32, int16_t                                                         \
+             : __cass_equal_int16, int8_t                                                          \
+             : __cass_equal_int8)((actual), (desired), __FILE__, __LINE__)
 
 #define cass_null(a)                                                                               \
     if ((a) != NULL) {                                                                             \
