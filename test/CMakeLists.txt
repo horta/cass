@@ -1,0 +1,5 @@
+add_executable(test_cass cass.c)
+target_link_libraries(test_cass CASS::cass)
+target_compile_options(test_cass PRIVATE ${WARNING_FLAGS})
+target_compile_features(test_cass PRIVATE c_std_11)
+add_test(NAME cass COMMAND test_cass)

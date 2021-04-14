@@ -49,3 +49,7 @@ configure_package_config_file(cass-config.cmake.in
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/cass-config.cmake
     DESTINATION lib/cmake/cass
 )
+
+
+enable_testing()
+add_subdirectory(test)

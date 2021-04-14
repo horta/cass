@@ -15,28 +15,28 @@ int main()
 void test_pass(void)
 {
     /* pass */
-    cass_condition(1 == 1);
+    cass_cond(1 == 1);
 
     /* pass */
-    cass_condition(isinf(INFINITY));
+    cass_cond(isinf(INFINITY));
 
     /* pass */
-    cass_condition(isnan(NAN));
+    cass_cond(isnan(NAN));
 
     /* pass */
     const char actual[] = "hello";
-    cass_condition(strcmp(actual, "hello") == 0);
+    cass_cond(strcmp(actual, "hello") == 0);
 }
 
 void test_fail(void)
 {
     /* fail */
-    cass_condition(1 == 2);
+    cass_cond(1 == 2);
 
     /* fail */
-    cass_condition(0);
+    cass_cond(0);
 
     /* fail */
     const char actual[] = "hello";
-    cass_condition(strcmp(actual, "world") == 0);
+    cass_cond(strcmp(actual, "world") == 0);
 }
